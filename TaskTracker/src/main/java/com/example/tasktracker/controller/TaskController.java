@@ -3,10 +3,10 @@ package com.example.tasktracker.controller;
 import com.example.tasktracker.h2.repository.Activities;
 import com.example.tasktracker.oracle.repository.TaskModel;
 import com.example.tasktracker.service.TaskService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.tasktracker.taskResponse.TaskResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TaskController {
@@ -30,5 +30,11 @@ public class TaskController {
     }
     @GetMapping("/activities")
     public Iterable<Activities> getallactivities(){return taskService.getallActivities();}
+
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable("id") Integer id){
+       TaskResponse taskResponse = taskService.getTaskbyId(id);
+       return   ResponseEntity.status(HttpStatus.OK).body(taskResponse);
+    }
 
 }
