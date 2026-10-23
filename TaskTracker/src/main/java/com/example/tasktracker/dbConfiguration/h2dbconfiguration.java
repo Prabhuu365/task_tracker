@@ -1,4 +1,64 @@
 package com.example.tasktracker.dbConfiguration;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+@Configuration
+@EnableJpaRepositories(entityManagerFactoryRef = "getLocalEntityMfb",
+transactionManagerRef = "getTM",
+        basePackages = "com.example.tasktracker.h2.repository"
+)
 public class h2dbconfiguration {
+    @Bean
+    @ConfigurationProperties(prefix ="spring.datasource.h2")
+    public DataSourceProperties getH2Dsp(){
+        return new DataSourceProperties();
+    }
+    @Bean
+    public DataSource getH2Ds(@Qualifier("getH2Dsp") DataSourceProperties dataSourceProperties){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUrl(dataSourceProperties.getUrl());
+        dataSource.setUsername(dataSourceProperties.getUsername());
+        dataSource.setPassword(dataSourceProperties.getPassword());
+        dataSource.setDriverClassName(dataSourceProperties.getDriverClassName());
+        return dataSource;
+    }
+    @Bean
+    public JpaVendorAdapter getH2Jva(){
+        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+        jpaVendorAdapter.setGenerateDdl(true);
+        jpaVendorAdapter.setShowSql(true);
+        return  jpaVendorAdapter;
+    }
+    @Bean
+    public LocalContainerEntityManagerFactoryBean getLocalEntityMfb (@Qualifier("getH2Ds") DataSource dataSource, @Qualifier(" getH2Jva")JpaVendorAdapter jpaVendorAdapter){
+        LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        localContainerEntityManagerFactoryBean.setDataSource(dataSource);
+        localContainerEntityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+        localContainerEntityManagerFactoryBean.setPackagesToScan("com.example.tasktracker.h2.repository");
+        return localContainerEntityManagerFactoryBean;
+    }
+    @Bean
+    public PlatformTransactionManager getTM(@Qualifier("getLocalEntityMfb") LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean){
+        assert  localContainerEntityManagerFactoryBean.getObject()!=null;
+
+        return new JpaTransactionManager(localContainerEntityManagerFactoryBean.getObject());
+    }
+
+
+
+
+
+
 }

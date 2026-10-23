@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -15,6 +16,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
+@EnableJpaRepositories(entityManagerFactoryRef = "getLocalEntityMfb",
+        transactionManagerRef = " getTM",
+        basePackages = "com.example.tasktracker.oracle.repository")
 public class Oracle_Configuration {
     @Bean
     @ConfigurationProperties(prefix ="spring.datasource.oracle")
