@@ -15,8 +15,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 @Configuration
-@EnableJpaRepositories(entityManagerFactoryRef = "getLocalEntityMfb",
-transactionManagerRef = "getTM",
+@EnableJpaRepositories(entityManagerFactoryRef = "getH2LocalEntityMfb",
+transactionManagerRef = "getH2TM",
         basePackages = "com.example.tasktracker.h2.repository"
 )
 public class h2dbconfiguration {
@@ -42,7 +42,7 @@ public class h2dbconfiguration {
         return  jpaVendorAdapter;
     }
     @Bean
-    public LocalContainerEntityManagerFactoryBean getLocalEntityMfb (@Qualifier("getH2Ds") DataSource dataSource, @Qualifier(" getH2Jva")JpaVendorAdapter jpaVendorAdapter){
+    public LocalContainerEntityManagerFactoryBean getH2LocalEntityMfb (@Qualifier("getH2Ds") DataSource dataSource, @Qualifier("getH2Jva")JpaVendorAdapter jpaVendorAdapter){
         LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         localContainerEntityManagerFactoryBean.setDataSource(dataSource);
         localContainerEntityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
@@ -50,7 +50,7 @@ public class h2dbconfiguration {
         return localContainerEntityManagerFactoryBean;
     }
     @Bean
-    public PlatformTransactionManager getTM(@Qualifier("getLocalEntityMfb") LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean){
+    public PlatformTransactionManager getH2TM(@Qualifier("getH2LocalEntityMfb") LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean){
         assert  localContainerEntityManagerFactoryBean.getObject()!=null;
 
         return new JpaTransactionManager(localContainerEntityManagerFactoryBean.getObject());

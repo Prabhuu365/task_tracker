@@ -1,5 +1,6 @@
 package com.example.tasktracker.controller;
 
+import com.example.tasktracker.h2.entity.Activities;
 import com.example.tasktracker.oracle.TaskModel;
 import com.example.tasktracker.service.TaskService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,5 +30,7 @@ public class TaskController {
     public Iterable<TaskModel> getalltasks(){
        return taskService.getallTasks();
     }
+    @GetMapping("/activities")
+    public Iterable<Activities> getallactivities(){return taskService.getallActivities();}
 
 }
