@@ -1,14 +1,12 @@
 package com.example.tasktracker.controller;
 
-import com.example.tasktracker.h2.entity.Activities;
-import com.example.tasktracker.oracle.TaskModel;
+import com.example.tasktracker.h2.repository.Activities;
+import com.example.tasktracker.oracle.repository.TaskModel;
 import com.example.tasktracker.service.TaskService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
 
 @RestController
 public class TaskController {

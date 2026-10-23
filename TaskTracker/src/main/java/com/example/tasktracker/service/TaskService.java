@@ -1,11 +1,11 @@
 package com.example.tasktracker.service;
 //import com.example.tasktracker.component.TaskIdGenerator;
-import com.example.tasktracker.h2.entity.Activities;
+import com.example.tasktracker.h2.repository.Activities;
 import com.example.tasktracker.h2.repository.H2repository;
 import com.example.tasktracker.oracle.repository.TaskRepository;
 
 import  org.springframework.stereotype.Service;
-import com.example.tasktracker.oracle.TaskModel;
+import com.example.tasktracker.oracle.repository.TaskModel;
 
 @Service
 public class TaskService {
@@ -27,9 +27,10 @@ public class TaskService {
 
         Activities activities = new Activities();
         activities.setAction("created");
-        activities.setTaskId(activities.getTaskId());
 
-        taskRepository.save(task);
+
+        TaskModel savedTask =  taskRepository.save(task);
+        activities.setTaskId(savedTask.getId());
         h2repository.save(activities);
 
          return "Details got Saved";

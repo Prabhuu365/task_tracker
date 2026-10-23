@@ -1,5 +1,4 @@
 package com.example.tasktracker.oracle.repository;
-import com.example.tasktracker.oracle.TaskModel;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

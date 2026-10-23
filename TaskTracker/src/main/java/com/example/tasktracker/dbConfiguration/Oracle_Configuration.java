@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(entityManagerFactoryRef = "getLocalEntityMfb",
-        transactionManagerRef = " getTM",
+        transactionManagerRef = "getTM",
         basePackages = "com.example.tasktracker.oracle.repository")
 public class Oracle_Configuration {
     @Bean

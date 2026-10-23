@@ -1,4 +1,6 @@
-package com.example.tasktracker.h2.entity;
+package com.example.tasktracker.h2.repository;
+
+// Make sure to put under same package as the oracle repository
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
